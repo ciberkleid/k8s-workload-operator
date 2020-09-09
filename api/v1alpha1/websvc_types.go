@@ -29,7 +29,10 @@ type WebSvcSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of WebSvc. Edit WebSvc_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	//Foo string `json:"foo,omitempty"`
+
+	Image string `json:"image,omitempty"`
+	DeploymentTier string `json:"deploymentTier,omitempty"`
 }
 
 // WebSvcStatus defines the observed state of WebSvc
