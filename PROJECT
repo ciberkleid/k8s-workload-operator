@@ -1,0 +1,3 @@
+domain: k8s.coraiberkleid.xyz
+repo: github.com/ciberkleid/k8s-workload-operator
+version: "2"

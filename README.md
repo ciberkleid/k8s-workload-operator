@@ -24,5 +24,7 @@ spec:
     
 ## Notes
 
+```
 go mod init github.com/ciberkleid/k8s-workload-operator
 kubebuilder init --domain k8s.coraiberkleid.xyz
+```
