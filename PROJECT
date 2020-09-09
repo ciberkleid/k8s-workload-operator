@@ -1,3 +1,7 @@
 domain: k8s.coraiberkleid.xyz
 repo: github.com/ciberkleid/k8s-workload-operator
+resources:
+- group: workloads
+  kind: WebSvc
+  version: v1alpha1
 version: "2"

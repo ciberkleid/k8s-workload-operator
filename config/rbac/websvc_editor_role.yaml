@@ -1,0 +1,24 @@
+# permissions for end users to edit websvcs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: websvc-editor-role
+rules:
+- apiGroups:
+  - workloads.k8s.coraiberkleid.xyz
+  resources:
+  - websvcs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - workloads.k8s.coraiberkleid.xyz
+  resources:
+  - websvcs/status
+  verbs:
+  - get

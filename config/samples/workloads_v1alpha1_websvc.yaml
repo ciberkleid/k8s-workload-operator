@@ -1,0 +1,7 @@
+apiVersion: workloads.k8s.coraiberkleid.xyz/v1alpha1
+kind: WebSvc
+metadata:
+  name: websvc-sample
+spec:
+  # Add fields here
+  foo: bar
