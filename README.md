@@ -31,4 +31,7 @@ go mod init github.com/ciberkleid/k8s-workload-operator
 kubebuilder init --domain k8s.coraiberkleid.xyz
 # create api (say y & y to prompts to create Resource and Controller)
 kubebuilder create api --group workloads --version v1alpha1 --kind WebSvc
+# create cluster using kind
+kind create cluster --name dev --config kind-config.yaml
+
 ```
