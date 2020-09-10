@@ -33,5 +33,8 @@ kubebuilder init --domain k8s.coraiberkleid.xyz
 kubebuilder create api --group workloads --version v1alpha1 --kind WebSvc
 # create cluster using kind
 kind create cluster --name dev --config kind-config.yaml
-
+# install CRD
+make install
+# check CRD created
+k get crd # returns: websvcs.workloads.k8s.coraiberkleid.xyz
 ```
