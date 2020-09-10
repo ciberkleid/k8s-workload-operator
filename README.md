@@ -37,4 +37,19 @@ kind create cluster --name dev --config kind-config.yaml
 make install
 # check CRD created
 k get crd # returns: websvcs.workloads.k8s.coraiberkleid.xyz
+# code controller (first pass), then create and start it:
+make run
+# Create sample WebSvc
+k apply -f config/samples/workloads_v1alpha1_websvc.yaml   # expect output websvc.workloads.k8s.coraiberkleid.xyz/websvc-sample created
+# List the new resource
+k get websvc
+# List all
+k get all   # Notice 2 pods for deploymentTier "dev"
+# clean up
+###k delete deploy websvc-sample # not needed since controller defines websvc as parent to deployment
+###k delete websvc websvc-sample # not needed since controller defines websvc as parent to deployment using SetControllerReference
+k delete websvc websvc-sample
+
+
+# Add owner reference to make future cleanups easier
 ```

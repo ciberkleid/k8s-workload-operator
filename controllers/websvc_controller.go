@@ -24,6 +24,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	workloadsv1alpha1 "github.com/ciberkleid/k8s-workload-operator/api/v1alpha1"
 )
 
@@ -38,10 +42,59 @@ type WebSvcReconciler struct {
 // +kubebuilder:rbac:groups=workloads.k8s.coraiberkleid.xyz,resources=websvcs/status,verbs=get;update;patch
 
 func (r *WebSvcReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	_ = context.Background()
-	_ = r.Log.WithValues("websvc", req.NamespacedName)
+	ctx := context.Background()
+	log := r.Log.WithValues("websvc", req.NamespacedName)
 
 	// your logic here
+	log.Info("in Reconcile func")
+	var resource workloadsv1alpha1.WebSvc
+	r.Get(ctx, req.NamespacedName, &resource)
+
+	var deployReplicas int32
+	switch resource.Spec.DeploymentTier {
+	case "dev":
+		deployReplicas = int32(2)
+	}
+
+	deploy := &appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      resource.Name,
+			Namespace: resource.Namespace,
+		},
+		Spec: appsv1.DeploymentSpec{
+			Replicas: &deployReplicas,
+			Selector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"app": resource.Name,
+				},
+			},
+			Template: corev1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"app": resource.Name,
+					},
+				},
+				Spec: corev1.PodSpec{
+					Containers: []corev1.Container{
+						{
+							Name:  resource.Name,
+							Image: resource.Spec.Image,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if err := ctrl.SetControllerReference(&resource, deploy, r.Scheme); err != nil {
+		log.Error(err, "Unable to set owner reference on deployment")
+		return ctrl.Result{}, err
+	}
+
+	if err := r.Create(ctx, deploy); err != nil {
+		log.Error(err, "Unable to create deployment")
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }

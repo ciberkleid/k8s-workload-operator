@@ -31,7 +31,7 @@ type WebSvcSpec struct {
 	// Foo is an example field of WebSvc. Edit WebSvc_types.go to remove/update
 	//Foo string `json:"foo,omitempty"`
 
-	Image string `json:"image,omitempty"`
+	Image          string `json:"image,omitempty"`
 	DeploymentTier string `json:"deploymentTier,omitempty"`
 }
 

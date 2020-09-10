@@ -4,4 +4,5 @@ metadata:
   name: websvc-sample
 spec:
   # Add fields here
-  foo: bar
+  image: ciberkleid/s1p-2020-mesh-blueorgreenservice
+  deploymentTier: dev
